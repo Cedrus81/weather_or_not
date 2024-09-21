@@ -1,12 +1,13 @@
+import { DailyData, FormattedData } from '@/types';
 import demoData from './demoData.json';
 
-export async function fetchDemoData(){
+export async function fetchDemoData(): Promise<FormattedData>{
     const simplifiedData = simplifyData(demoData)
     return simplifiedData
 }
 
 
-export async function fetchWeatherData(){
+export async function fetchWeatherData(): Promise<FormattedData>{
     const url = 'https://weatherapi-com.p.rapidapi.com/forecast.json?q=London&days=6';
     const options = {
         method: 'GET',
@@ -21,13 +22,15 @@ export async function fetchWeatherData(){
         const result = await response.json();
         const simplifiedData = simplifyData(result)
         console.log(simplifiedData);
+        return simplifiedData
     } catch (error) {
         console.error(error);
+        return fetchDemoData()
     }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function simplifyData(data: any){
+export function simplifyData(data: any): FormattedData{
     const simplifiedData = {
         location: {
             city: data.location.name,
@@ -47,7 +50,7 @@ export function simplifyData(data: any){
 // helper functions
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function simplifyForecast(forecast: Array<any>) {
+function simplifyForecast(forecast: Array<any>): Array<DailyData> {
     const simplifiedForecast = forecast.map((day) => {
         return {
             date: shortDateFormat(day.date_epoch),
