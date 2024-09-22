@@ -1,4 +1,5 @@
 .hero{
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -6,9 +7,71 @@
     width: 28.75rem;
     padding-inline: 2.625rem;
     padding-block: 2.875rem;
+    overflow: hidden;
+
+    &.display{
+        justify-content: space-between;
+    }
     header{
         display: flex;
         justify-content: space-between;
         width: 100%;
     }
+    .hero-degrees{
+        color: $text-light;
+        font-size: 3rem;
+        span.hero-degrees{
+            font-size: 9rem;
+        }
+    }
+    h1{
+        color: $text-dark;
+        font-size: 2.25rem;
+    }
+    .hero-footer{
+        color:$text-dark;
+        font-size: 1.125rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        span.separator{
+            margin-inline: 1rem;
+        }
+        .hero-footer-top{
+            display: flex;
+            justify-content: center;
+        }
+        .hero-footer-bottom{
+            display: flex;
+            gap: 0.25rem;
+            justify-content: center;
+            align-items: center;
+            img{
+                filter: invert(54%) sepia(6%) saturate(966%) hue-rotate(206deg) brightness(99%) contrast(83%);
+            }
+        }
+    }
+}
+
+.weather-icon-container{
+    position: relative;
+    
+    // display: flex;
+    // height: 100%;
+    // justify-content: center;
+    // background-image: url('../../../public/assets/images/Cloud-background.webp');
+    // background-repeat: no-repeat;
+    
+}
+
+img.weather-background{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    object-fit: contain;
+    zoom: 1.5;
+    filter: brightness(0.5);
+    opacity: 0.1;
+    pointer-events: none;
 }

@@ -37,8 +37,8 @@ export function simplifyData(data: any): FormattedData{
             country: data.location.country
         },
         current: {
-            tempC: data.current.temp_c,
-            tempF: data.current.temp_f,
+            tempC: Math.round(data.current.temp_c),
+            tempF: Math.round(data.current.temp_f),
             isDay: data.current.is_day
         },
         forecast: simplifyForecast(data.forecast.forecastday)
@@ -55,10 +55,10 @@ function simplifyForecast(forecast: Array<any>): Array<DailyData> {
         return {
             date: shortDateFormat(day.date_epoch),
             dailyData : {
-                maxTempC: day.day.maxtemp_c,
-                maxTempF: day.day.maxtemp_f,
-                minTempC: day.day.mintemp_c,
-                minTempF: day.day.mintemp_f,
+                maxTempC: Math.round(day.day.maxtemp_c),
+                maxTempF: Math.round(day.day.maxtemp_f),
+                minTempC: Math.round(day.day.mintemp_c),
+                minTempF: Math.round(day.day.mintemp_f),
                 willRain: day.day.daily_will_it_rain,
                 willSnow: day.day.daily_will_it_snow
             },
