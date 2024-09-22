@@ -1,0 +1,27 @@
+button{
+ background-color: $bg-button-hero;
+ color: $text-light;
+ border: 0;
+ transition: 0.2s;
+ cursor: pointer;
+ &:hover{
+    background-color: $bg-button-active;
+ }
+ &.square{
+  padding: 0.625rem 1.125rem;
+ }
+ 
+ &.circle{
+     height: 2.5rem;
+     width: 2.5rem;
+     border-radius: 100%;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     img{
+         filter: invert(94%) sepia(7%) saturate(72%) hue-rotate(201deg) brightness(100%) contrast(89%);
+     }
+
+
+ }
+}

@@ -64,7 +64,7 @@ function simplifyForecast(forecast: Array<any>): Array<DailyData> {
             },
             condition: {
             text: day.day.condition.text,
-            icon: day.day.condition.icon
+            icon: 'https:'.concat(day.day.condition.icon)
             }
         }
     })

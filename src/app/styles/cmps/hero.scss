@@ -1,4 +1,14 @@
 .hero{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background-color: $bg-light;
     width: 28.75rem;
+    padding-inline: 2.625rem;
+    padding-block: 2.875rem;
+    header{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
 }
