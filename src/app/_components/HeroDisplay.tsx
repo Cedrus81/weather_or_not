@@ -1,13 +1,17 @@
 import { FormattedData } from "@/types";
 import Image from "next/image";
 import LocationIcon from "../../public/assets/icons/location.svg";
+import { getRelevantImagePath } from "@/utils";
 interface HeroDisplayProps {
   data: FormattedData;
 }
 
-function HeroDisplay({ data }: HeroDisplayProps) {
-  console.log(data);
-  const { icon } = data.forecast[0].condition;
+async function HeroDisplay({ data }: HeroDisplayProps) {
+  const { code } = data.forecast[0].condition;
+  const ConditionImg = await import(
+    `../../public/assets/images/${getRelevantImagePath(code)}.webp`
+  );
+
   return (
     <section className="hero display">
       <header className="display-header">
@@ -17,7 +21,7 @@ function HeroDisplay({ data }: HeroDisplayProps) {
         </button>
       </header>
       <Image
-        src={icon}
+        src={ConditionImg.default}
         width={202}
         height={234}
         style={{ objectFit: "contain" }}

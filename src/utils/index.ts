@@ -21,7 +21,7 @@ export async function fetchWeatherData(): Promise<FormattedData>{
         const response = await fetch(url, options);
         const result = await response.json();
         const simplifiedData = simplifyData(result)
-        console.log(simplifiedData);
+        // console.log(simplifiedData);
         return simplifiedData
     } catch (error) {
         console.error(error);
@@ -64,7 +64,8 @@ function simplifyForecast(forecast: Array<any>): Array<DailyData> {
             },
             condition: {
             text: day.day.condition.text,
-            icon: 'https:'.concat(day.day.condition.icon)
+            // icon: 'https:'.concat(day.day.condition.icon)
+            code: day.day.condition.code
             }
         }
     })
@@ -88,4 +89,80 @@ function shortDateFormat (miliseconds: number): string{
 
   // Return the formatted date string
   return `${dayOfWeek}, ${dayOfMonth} ${month}`;
+}
+
+
+export function getRelevantImagePath(code:number): string{
+    debugger
+    switch (code){
+        case 1000:
+            {
+                return 'Clear'
+            }
+         case 1006: 
+         case 1030:
+         case 1135:
+            {
+                return 'HeavyCloud'
+            }
+         case 1189: 
+         case 1186:
+         case 1192:
+         case 1195:
+            {
+                return 'HeavyRain'
+            } 
+         case 1003: 
+         case 1009:
+            {
+                return 'LightCloud'
+            }
+         case 1063: 
+         case 1153:
+         case 1183:
+            {
+                return 'LightRain'
+            }
+         case 1150: 
+         case 1180:
+         case 1240:
+         case 1243:
+         case 1246:
+            {
+                return 'Shower'
+            }
+         case 1064: 
+         case 1147:
+         case 1204:
+         case 1207:
+         case 1249:
+         case 1252:
+            {
+                return 'Sleet'
+            }
+         case 1087: 
+         case 1273:
+         case 1276:
+         case 1279:
+         case 1282:
+            {
+                return 'ThunderStorm'
+            }
+         case 1072: 
+         case 1168:
+         case 1171:
+         case 1198:
+         case 1201:
+         case 1237:
+         case 1261:
+         case 1264:
+            {
+                return 'Hail'
+            }
+        default:
+            {
+                return 'Snow'
+            }
+
+    }
 }

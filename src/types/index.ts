@@ -23,6 +23,7 @@ export type DailyData = {
         },
         condition: {
         text: string,
-        icon: string
+        // icon: string
+        code: number
         }
 }
