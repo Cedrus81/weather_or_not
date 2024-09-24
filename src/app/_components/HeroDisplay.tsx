@@ -36,7 +36,6 @@ async function HeroDisplay({ data }: HeroDisplayProps) {
           width={459}
           height={376}
           className="weather-background"
-          objectFit="contain"
         />
       </div>
       <span className="hero-degrees">
@@ -52,13 +51,7 @@ async function HeroDisplay({ data }: HeroDisplayProps) {
           <span> {data.forecast[0].date}</span>
         </div>
         <div className="hero-footer-bottom">
-          <Image
-            src={GPSIcon}
-            alt="gps"
-            width={24}
-            height={24}
-            objectFit="contain"
-          />
+          <Image src={GPSIcon} alt="gps" width={24} height={24} />
           <span>{data.location.city}</span>
         </div>
       </footer>

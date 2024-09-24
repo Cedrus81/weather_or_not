@@ -1,5 +1,5 @@
 import { DailyData, FormattedData } from '@/types';
-import demoData from './demoData.json';
+import demoData from './demoData1.json';
 
 export async function fetchDemoData(): Promise<FormattedData>{
     const simplifiedData = simplifyData(demoData)
@@ -8,7 +8,7 @@ export async function fetchDemoData(): Promise<FormattedData>{
 
 
 export async function fetchWeatherData(): Promise<FormattedData>{
-    const url = 'https://weatherapi-com.p.rapidapi.com/forecast.json?q=London&days=6';
+    const url = 'https://weatherapi-com.p.rapidapi.com/forecast.json?q=Tel%20Aviv&days=6';
     const options = {
         method: 'GET',
         headers: {
@@ -21,7 +21,7 @@ export async function fetchWeatherData(): Promise<FormattedData>{
         const response = await fetch(url, options);
         const result = await response.json();
         const simplifiedData = simplifyData(result)
-        // console.log(simplifiedData);
+        console.log(simplifiedData);
         return simplifiedData
     } catch (error) {
         console.error(error);
@@ -53,7 +53,7 @@ export function simplifyData(data: any): FormattedData{
 function simplifyForecast(forecast: Array<any>): Array<DailyData> {
     const simplifiedForecast = forecast.map((day) => {
         return {
-            date: shortDateFormat(day.date_epoch),
+            date: shortDateFormat(day.date_epoch * 1000),
             dailyData : {
                 maxTempC: Math.round(day.day.maxtemp_c),
                 maxTempF: Math.round(day.day.maxtemp_f),
