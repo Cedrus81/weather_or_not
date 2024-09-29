@@ -1,29 +1,35 @@
 export type FormattedData = {
-    location: {
-        city: string,
-        country: string
-    },
+    city: string,
     current: {
-        tempC: number,
-        tempF: number,
-        isDay: number,
+        isDay: boolean,
+        date: string,
+        temp: number,
+        wind_speed: number,
+        wind_deg: number,
+        humidity: number,
+        pressure: number,
+        visibility: number,
+        weather: Array<{
+            id: number,
+            main: string,
+            description: string,
+            icon: string
+        }>
     },
     forecast: Array<DailyData>
 }
 
 export type DailyData = {
-        date: string,
-        dailyData : {
-            maxTempC: number,
-            maxTempF: number,
-            minTempC: number,
-            minTempF: number,
-            willRain: number,
-            willSnow: number
-        },
-        condition: {
-        text: string,
-        // icon: string
-        code: number
-        }
+    date: string,
+    summary: string,
+    temp: {
+        min: number,
+        max: number
+    },
+    weather: Array<{
+        id: number,
+        main: string,
+        description: string,
+        icon: string
+    }>
 }

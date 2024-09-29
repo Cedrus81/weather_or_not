@@ -1,5 +1,4 @@
 import { DailyData } from "@/types";
-import { getRelevantImagePath } from "@/utils";
 import Image from "next/image";
 
 interface ForecastCardProps {
@@ -8,19 +7,24 @@ interface ForecastCardProps {
 }
 
 async function ForecastCard({ day, isTomorrow }: ForecastCardProps) {
-  const { code } = day.condition;
-  const ConditionImg = await import(
-    `../../public/assets/images/${getRelevantImagePath(code)}.webp`
-  );
+  const { icon } = day.weather[0];
+  // const ConditionImg = await import(
+  //   `../../public/assets/images/${getRelevantImagePath(code)}.webp`
+  // );
   return (
     <div className="forecast-card">
       <div className="forecast-card-content">
         <span>{isTomorrow ? "Tomorrow" : day.date}</span>
-        <Image src={ConditionImg.default} alt={"condition"} height={62} />
+        <Image
+          src={`https://openweathermap.org/img/wn/${icon}@2x.png`}
+          alt={"condition"}
+          height={88}
+          width={88}
+        />
       </div>
       <div className="forecast-card-footer">
-        <span className="max-temp">{day.dailyData.maxTempC}&deg;C</span>
-        <span className="min-temp">{day.dailyData.minTempC}&deg;C</span>
+        <span className="max-temp">{day.temp.max}&deg;C</span>
+        <span className="min-temp">{day.temp.min}&deg;C</span>
       </div>
     </div>
   );

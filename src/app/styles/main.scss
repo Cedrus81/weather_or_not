@@ -3,7 +3,7 @@
 
 @import 'cmps/hero.scss';
 @import 'cmps/buttons.scss';
-
+@import 'cmps/highlight-card.scss';
 // main page and setup
 *{
     box-sizing: border-box;
@@ -15,7 +15,7 @@ html{
     font-family: 'raleway';
 }
 body{
-    height: 100%;
+    // height: 100%;
     margin: 0;
     display: flex;
 }
@@ -25,11 +25,12 @@ main {
     background-color: $bg-dark;
 }
 .main-content{
-    margin-top: 2.625rem;
-    margin-inline: 9.625rem;
+    margin-block: 2.625rem;
+    max-width: 44.75rem;
+    margin-inline: auto;
     display: flex;
     gap: 4.5rem;
-    height: 100%;
+    // height: 100%;
     flex-direction: column;
 }
 .main-content-header{
@@ -53,6 +54,14 @@ main {
             display: flex;
             flex-direction: column;
             align-items: center;
+            span{
+                font-size: 1.125rem;
+                white-space: nowrap;
+            }
+            // img{
+            //     width: 100%;
+            //     height: 100%;
+            // }
         }
         .forecast-card-footer{
             display: flex;

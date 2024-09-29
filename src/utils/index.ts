@@ -1,28 +1,27 @@
 import { DailyData, FormattedData } from '@/types';
-import demoData from './demoData1.json';
+import demoData from './demoData.json';
 
-export async function fetchDemoData(): Promise<FormattedData>{
-    const simplifiedData = simplifyData(demoData)
+export async function fetchDemoData(): Promise<FormattedData> {
+    const simplifiedData = simplifyData(demoData, 'Tel Aviv')
+    // console.log(simplifiedData.current.weather)
     return simplifiedData
 }
 
 
-export async function fetchWeatherData(): Promise<FormattedData>{
-    const url = 'https://weatherapi-com.p.rapidapi.com/forecast.json?q=Tel%20Aviv&days=6';
-    const options = {
-        method: 'GET',
-        headers: {
-            'x-rapidapi-key': '2183f89e08mshf84b548eec725f8p13914fjsn4d2df1511328',
-            'x-rapidapi-host': 'weatherapi-com.p.rapidapi.com'
-        }
-    };
-    
+export async function fetchWeatherData() {
+    const API_KEY = process.env.WEATHER_API_KEY
     try {
-        const response = await fetch(url, options);
-        const result = await response.json();
-        const simplifiedData = simplifyData(result)
-        console.log(simplifiedData);
-        return simplifiedData
+        // get the geo-data
+        const geoResponse = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=Tel%20Aviv&limit=1&appid=${API_KEY}`)
+        const geoData = await geoResponse.json()
+        const { lat, lon, name } = geoData[0]
+        // use the latitude and longtitude to make the request for the weather data. Save the city name
+        const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&units=metric&appid=${API_KEY}`
+        const weatherResponse = await fetch(url)
+        const weatherData = await weatherResponse.json()
+        // console.log(weatherData)
+        const formattedData = simplifyData(weatherData, name)
+        return formattedData
     } catch (error) {
         console.error(error);
         return fetchDemoData()
@@ -30,20 +29,42 @@ export async function fetchWeatherData(): Promise<FormattedData>{
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function simplifyData(data: any): FormattedData{
+export function simplifyData(data: any, city: string): FormattedData {
+    const { temp, wind_speed, wind_deg, weather, pressure, humidity, dt, visibility } = data.current
     const simplifiedData = {
-        location: {
-            city: data.location.name,
-            country: data.location.country
-        },
+        city,
         current: {
-            tempC: Math.round(data.current.temp_c),
-            tempF: Math.round(data.current.temp_f),
-            isDay: data.current.is_day
+            isDay: isDay(dt),
+            date: shortDateFormat(dt * 1000),
+            temp: Math.round(temp),
+            wind_speed: Math.round(wind_speed),
+            wind_deg,
+            weather,
+            pressure,
+            humidity,
+            visibility
         },
-        forecast: simplifyForecast(data.forecast.forecastday)
+        forecast: simplifyForecast(data.daily)
     }
     return simplifiedData
+}
+
+
+export function getDirection(angle: number) {
+    // We divide it into 16 sections
+    const directions = ["N", "NNE", "NE", "ENE", "E",
+        "ESE", "SE", "SSE", "S",
+        "SSW", "SW", "WSW", "W",
+        "WNW", "NW", "NNW"];
+    // This means, every 360 / 16 degree, there's a section change
+    // So, in our case, every 22.5 degree, there's a section change
+    // In order to get the correct section, we just need to divide
+    let section = Math.round(angle / 22.5)
+
+    // Now we know the section, just need to make sure it's under 16
+    section = section % 16;
+
+    return directions[section];
 }
 
 
@@ -51,118 +72,45 @@ export function simplifyData(data: any): FormattedData{
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function simplifyForecast(forecast: Array<any>): Array<DailyData> {
+
     const simplifiedForecast = forecast.map((day) => {
+        const { dt, weather, summary } = day
+        const { min, max } = day.temp
         return {
-            date: shortDateFormat(day.date_epoch * 1000),
-            dailyData : {
-                maxTempC: Math.round(day.day.maxtemp_c),
-                maxTempF: Math.round(day.day.maxtemp_f),
-                minTempC: Math.round(day.day.mintemp_c),
-                minTempF: Math.round(day.day.mintemp_f),
-                willRain: day.day.daily_will_it_rain,
-                willSnow: day.day.daily_will_it_snow
+            date: shortDateFormat(dt * 1000),
+            summary,
+            temp: {
+                min: Math.round(min),
+                max: Math.round(max)
             },
-            condition: {
-            text: day.day.condition.text,
-            // icon: 'https:'.concat(day.day.condition.icon)
-            code: day.day.condition.code
-            }
+            weather
         }
     })
 
     return simplifiedForecast
 }
 
-function shortDateFormat (miliseconds: number): string{
+function shortDateFormat(miliseconds: number): string {
     const date = new Date(miliseconds);
 
-     // Array of month names (abbreviated)
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    // Array of month names (abbreviated)
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-  // Array of weekday names (abbreviated)
-  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    // Array of weekday names (abbreviated)
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  // Get the day of the week, day of the month, and month
-  const dayOfWeek = days[date.getDay()];  // E.g., 'Wed'
-  const dayOfMonth = date.getDate();      // E.g., 4
-  const month = months[date.getMonth()];  // E.g., 'Jun'
+    // Get the day of the week, day of the month, and month
+    const dayOfWeek = days[date.getDay()];  // E.g., 'Wed'
+    const dayOfMonth = date.getDate();      // E.g., 4
+    const month = months[date.getMonth()];  // E.g., 'Jun'
 
-  // Return the formatted date string
-  return `${dayOfWeek}, ${dayOfMonth} ${month}`;
+    // Return the formatted date string
+    return `${dayOfWeek}, ${dayOfMonth} ${month}`;
 }
 
 
-export function getRelevantImagePath(code:number): string{
-    debugger
-    switch (code){
-        case 1000:
-            {
-                return 'Clear'
-            }
-         case 1006: 
-         case 1030:
-         case 1135:
-            {
-                return 'HeavyCloud'
-            }
-         case 1189: 
-         case 1186:
-         case 1192:
-         case 1195:
-            {
-                return 'HeavyRain'
-            } 
-         case 1003: 
-         case 1009:
-            {
-                return 'LightCloud'
-            }
-         case 1063: 
-         case 1153:
-         case 1183:
-            {
-                return 'LightRain'
-            }
-         case 1150: 
-         case 1180:
-         case 1240:
-         case 1243:
-         case 1246:
-            {
-                return 'Shower'
-            }
-         case 1064: 
-         case 1147:
-         case 1204:
-         case 1207:
-         case 1249:
-         case 1252:
-            {
-                return 'Sleet'
-            }
-         case 1087: 
-         case 1273:
-         case 1276:
-         case 1279:
-         case 1282:
-            {
-                return 'ThunderStorm'
-            }
-         case 1072: 
-         case 1168:
-         case 1171:
-         case 1198:
-         case 1201:
-         case 1237:
-         case 1261:
-         case 1264:
-            {
-                return 'Hail'
-            }
-        default:
-            {
-                return 'Snow'
-            }
-
-    }
+function isDay(timestamp: number) {
+    const date = new Date(timestamp * 1000)
+    const isDay = date.getHours() > 5 || date.getHours() < 18
+    return isDay
 }

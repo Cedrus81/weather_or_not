@@ -1,0 +1,44 @@
+.highlight-card-list{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+}
+
+.highlight-card{
+    font-size: 1.125rem;
+    padding-top: 1.375rem;
+    background-color: $bg-light;
+    width: 20.5rem;
+    height: 12.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.highlight-content{
+    font-size: 2.25rem;
+    line-height: 1;
+    .enlarged{
+        font-weight: 700;
+        font-size: 4rem;
+    }
+}
+
+// EXTRAS
+
+.wind-direction-container{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.wind-direction-bg{
+    width: 2rem;
+    height: 2rem;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #616475;
+}

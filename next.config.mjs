@@ -4,7 +4,7 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'cdn.weatherapi.com',
+                hostname: 'openweathermap.org',
             }
         ]
     }
