@@ -3,6 +3,7 @@ import HeroDisplay from "./_components/HeroDisplay";
 import ForecastCard from "./_components/ForecastCard";
 import Highlights from "./_components/highlights/Highlights";
 import WindDirection from "./_components/highlights/WindDirection";
+import HumidityBar from "./_components/highlights/HumidityBar";
 
 export default async function Home() {
   const data = await fetchDemoData();
@@ -26,6 +27,7 @@ export default async function Home() {
           <span className="enlarged">{data.current.humidity}</span>%
         </div>
       ),
+      extra: <HumidityBar percentage={data.current.humidity} />,
     },
     {
       title: "Visibility",

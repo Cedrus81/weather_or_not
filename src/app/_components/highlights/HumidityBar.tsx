@@ -1,11 +1,19 @@
-function HumidityBar() {
+type BarProps = {
+  percentage: number;
+};
+
+function HumidityBar({ percentage }: BarProps) {
   return (
     <div className="bar-container">
-      <div className="bar-scales"></div>
-      <div className="whitebar">
-        <div className="fill-bar"></div>
+      <div className="bar-scales">
+        <span>0</span>
+        <span>50</span>
+        <span>100</span>
       </div>
-      <span></span>
+      <div className="whitebar">
+        <div className="fill-bar" style={{ width: `${percentage}%` }}></div>
+      </div>
+      <span style={{ alignSelf: "flex-end" }}>%</span>
     </div>
   );
 }

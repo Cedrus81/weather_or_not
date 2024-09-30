@@ -1,8 +1,11 @@
 .bar-container {
+    width: 100%;
+    padding-inline: 3rem;
     font-size: 0.75rem;
     color: $text-light;
     display: flex;
     flex-direction: column;
+    gap: 0.25rem;
     .bar-scales{
         display: flex;
         justify-content: space-between;
@@ -11,14 +14,15 @@
         position: relative;
         width: 100%;
         background-color: $text-light;
-        border-radius: 50%;
+        border-radius: 0.5rem;
         height: 0.5rem;
+        overflow: hidden;
         .fill-bar{
             position: absolute;
             left: 0;
             height: 100%;
-            background-color: #FFEC65;
-            border-radius: 50%;
+            background-color: #659eff;
+            border-radius: 0.5rem;
         }
     }
 }
