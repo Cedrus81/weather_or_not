@@ -1,0 +1,24 @@
+.bar-container {
+    font-size: 0.75rem;
+    color: $text-light;
+    display: flex;
+    flex-direction: column;
+    .bar-scales{
+        display: flex;
+        justify-content: space-between;
+    }
+    .whitebar{
+        position: relative;
+        width: 100%;
+        background-color: $text-light;
+        border-radius: 50%;
+        height: 0.5rem;
+        .fill-bar{
+            position: absolute;
+            left: 0;
+            height: 100%;
+            background-color: #FFEC65;
+            border-radius: 50%;
+        }
+    }
+}
