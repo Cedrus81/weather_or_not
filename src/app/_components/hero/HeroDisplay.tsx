@@ -2,6 +2,7 @@
 import { FormattedData } from "@/types";
 import { useState } from "react";
 import HeroCurrent from "./HeroCurrent";
+import HeroSearch from "./HeroSearch";
 interface HeroDisplayProps {
   data: FormattedData;
 }
@@ -9,9 +10,9 @@ interface HeroDisplayProps {
 function HeroDisplay({ data }: HeroDisplayProps) {
   const [isSearchActive, setIsSearchActive] = useState(false);
   return (
-    <section className="hero display">
+    <section className={`hero display ${isSearchActive ? "search" : ""}`}>
       {isSearchActive ? (
-        <div className=""></div>
+        <HeroSearch closeSearch={() => setIsSearchActive(false)} />
       ) : (
         <HeroCurrent
           data={data}
