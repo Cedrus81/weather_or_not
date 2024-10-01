@@ -1,23 +1,22 @@
-import { FormattedData } from "@/types";
 import Image from "next/image";
-import LocationIcon from "../../public/static/assets/icons/location.svg";
-import GPSIcon from "../../public/static/assets/icons/location-dot-solid.svg";
-// import { getRelevantImagePath } from "@/utils";
-import BackgroundImage from "../../public/static/assets/images/Cloud-background.webp";
-interface HeroDisplayProps {
+import LocationIcon from "../../../public/static/assets/icons/location.svg";
+import GPSIcon from "../../../public/static/assets/icons/location-dot-solid.svg";
+import BackgroundImage from "../../../public/static/assets/images/Cloud-background.webp";
+import { FormattedData } from "@/types";
+
+interface HeroCurrentProps {
   data: FormattedData;
+  activateSearch: () => void;
 }
 
-async function HeroDisplay({ data }: HeroDisplayProps) {
+function HeroCurrent({ data, activateSearch }: HeroCurrentProps) {
   const { icon } = data.current.weather[0];
-  // const ConditionImg = await import(
-  //   `../../public/assets/images/${getRelevantImagePath(code)}.webp`
-  // );
-
   return (
-    <section className="hero display">
+    <>
       <header className="display-header">
-        <button className="square">Search for places</button>
+        <button className="square" onClick={activateSearch}>
+          Search for places
+        </button>
         <button className="circle">
           <Image src={LocationIcon} alt="location" width={24} height={24} />
         </button>
@@ -55,8 +54,8 @@ async function HeroDisplay({ data }: HeroDisplayProps) {
           <span>{data.city}</span>
         </div>
       </footer>
-    </section>
+    </>
   );
 }
 
-export default HeroDisplay;
+export default HeroCurrent;

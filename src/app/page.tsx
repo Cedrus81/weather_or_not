@@ -1,5 +1,5 @@
 import { fetchDemoData } from "@/utils";
-import HeroDisplay from "./_components/HeroDisplay";
+import HeroDisplay from "./_components/hero/HeroDisplay";
 import ForecastCard from "./_components/ForecastCard";
 import Highlights from "./_components/highlights/Highlights";
 import WindDirection from "./_components/highlights/WindDirection";
