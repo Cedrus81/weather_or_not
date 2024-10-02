@@ -1,6 +1,6 @@
-.search{
-    // display: flex;
-    // flex-direction: column;
+
+
+.hero:has(.search-container){
     align-items: flex-start;
     .search-container{
         margin-top: 3rem;

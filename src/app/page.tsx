@@ -1,9 +1,11 @@
 import { fetchDemoData } from "@/utils";
 import HeroDisplay from "./_components/hero/HeroDisplay";
-import ForecastCard from "./_components/ForecastCard";
-import Highlights from "./_components/highlights/Highlights";
+import HighlightSection from "./_components/highlights/HighlightSection";
 import WindDirection from "./_components/highlights/WindDirection";
 import HumidityBar from "./_components/highlights/HumidityBar";
+import { HeroDisplayProvider } from "./_providers/HeroDisplayProvider";
+import { WeatherDataProvider } from "./_providers/WeatherDataProvider";
+import ForecastSection from "./_components/forecast/ForecastSection";
 
 export default async function Home() {
   const data = await fetchDemoData();
@@ -14,7 +16,7 @@ export default async function Home() {
         <div className="highlight-content">
           <span className="enlarged">
             {Math.round(data.current.wind_speed * 1.94384449)}
-          </span>{" "}
+          </span>
           Knots
         </div>
       ),
@@ -53,35 +55,24 @@ export default async function Home() {
 
   return (
     <body>
-      <HeroDisplay data={data} />
-      <main>
-        <div className="main-content">
-          <div className="main-content-header">
-            <button className="temperature-button">&deg;C</button>
-            <button className="temperature-button">&deg;F</button>
+      <WeatherDataProvider initialData={data}>
+        <HeroDisplayProvider>
+          <HeroDisplay />
+        </HeroDisplayProvider>
+        <main>
+          <div className="main-content">
+            <div className="main-content-header">
+              <button className="temperature-button">&deg;C</button>
+              <button className="temperature-button">&deg;F</button>
+            </div>
+            <ForecastSection forecast={data.forecast} />
+            <div className="today-highlights">
+              <h2>Today&apos;s Highlights</h2>
+              <HighlightSection data={highlightData} />
+            </div>
           </div>
-          <section className="forecast">
-            {data.forecast.slice(1, 6).map((day, idx) => (
-              <ForecastCard key={day.date} day={day} isTomorrow={idx === 0} />
-            ))}
-          </section>
-          <div className="today-highlights">
-            <h2>Today&apos;s Highlights</h2>
-            <Highlights data={highlightData} />
-            {/* <div className="highlight-card-list">
-              {highlightData.map((highlight) => (
-                <div
-                  className="highlight-card"
-                  key={"highlight" + highlight.title}
-                >
-                  <span className="highlight-title">{highlight.title}</span>
-                  <span className="highlight-content">{highlight.content}</span>
-                </div>
-              ))}
-            </div> */}
-          </div>
-        </div>
-      </main>
+        </main>
+      </WeatherDataProvider>
     </body>
   );
 }

@@ -2,21 +2,20 @@ import Image from "next/image";
 import LocationIcon from "../../../public/static/assets/icons/location.svg";
 import GPSIcon from "../../../public/static/assets/icons/location-dot-solid.svg";
 import BackgroundImage from "../../../public/static/assets/images/Cloud-background.webp";
-import { FormattedData } from "@/types";
+import SearchButton from "../buttons/SearchButton";
+import { useWeatherData } from "@/app/_providers/WeatherDataProvider";
 
-interface HeroCurrentProps {
-  data: FormattedData;
-  activateSearch: () => void;
-}
-
-function HeroCurrent({ data, activateSearch }: HeroCurrentProps) {
-  const { icon } = data.current.weather[0];
+function HeroCurrent() {
+  const { weatherData } = useWeatherData();
+  if (!weatherData)
+    throw new Error(
+      "current weather data is undefined, this shouldnt be happening"
+    );
+  const { icon } = weatherData.current.weather[0];
   return (
     <>
       <header className="display-header">
-        <button className="square" onClick={activateSearch}>
-          Search for places
-        </button>
+        <SearchButton />
         <button className="circle">
           <Image src={LocationIcon} alt="location" width={24} height={24} />
         </button>
@@ -38,20 +37,20 @@ function HeroCurrent({ data, activateSearch }: HeroCurrentProps) {
         />
       </div>
       <span className="hero-degrees">
-        <span className="hero-degrees">{data.current.temp}</span>
+        <span className="hero-degrees">{weatherData.current.temp}</span>
         &deg;C
       </span>
 
-      <h1>{data.current.weather[0].main}</h1>
+      <h1>{weatherData.current.weather[0].main}</h1>
       <footer className="hero-footer">
         <div className="hero-footer-top">
-          <span>{data.current.isDay ? "Today" : "Tonight"}</span>
+          <span>{weatherData.current.isDay ? "Today" : "Tonight"}</span>
           <span className="separator">•</span>
-          <span> {data.forecast[0].date}</span>
+          <span> {weatherData.forecast[0].date}</span>
         </div>
         <div className="hero-footer-bottom">
           <Image src={GPSIcon} alt="gps" width={24} height={24} />
-          <span>{data.city}</span>
+          <span>{weatherData.city}</span>
         </div>
       </footer>
     </>

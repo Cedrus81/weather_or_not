@@ -8,9 +8,6 @@ interface ForecastCardProps {
 
 async function ForecastCard({ day, isTomorrow }: ForecastCardProps) {
   const { icon } = day.weather[0];
-  // const ConditionImg = await import(
-  //   `../../public/assets/images/${getRelevantImagePath(code)}.webp`
-  // );
   return (
     <div className="forecast-card">
       <div className="forecast-card-content">

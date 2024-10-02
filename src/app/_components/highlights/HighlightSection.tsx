@@ -7,7 +7,7 @@ type HighlightsProps = {
   }>;
 };
 
-function Highlights({ data }: HighlightsProps) {
+function HighlightSection({ data }: HighlightsProps) {
   return (
     <div className="highlight-card-list">
       {data.map((highlight) => (
@@ -21,4 +21,4 @@ function Highlights({ data }: HighlightsProps) {
   );
 }
 
-export default Highlights;
+export default HighlightSection;

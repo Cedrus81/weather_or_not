@@ -1,24 +1,13 @@
 "use client";
-import { FormattedData } from "@/types";
-import { useState } from "react";
 import HeroCurrent from "./HeroCurrent";
 import HeroSearch from "./HeroSearch";
-interface HeroDisplayProps {
-  data: FormattedData;
-}
+import { useHeroDisplay } from "@/app/_providers/HeroDisplayProvider";
+function HeroDisplay() {
+  const { isSearchActive } = useHeroDisplay();
 
-function HeroDisplay({ data }: HeroDisplayProps) {
-  const [isSearchActive, setIsSearchActive] = useState(false);
   return (
-    <section className={`hero display ${isSearchActive ? "search" : ""}`}>
-      {isSearchActive ? (
-        <HeroSearch closeSearch={() => setIsSearchActive(false)} />
-      ) : (
-        <HeroCurrent
-          data={data}
-          activateSearch={() => setIsSearchActive(true)}
-        />
-      )}
+    <section className={`hero display`}>
+      {isSearchActive ? <HeroSearch /> : <HeroCurrent />}
     </section>
   );
 }
