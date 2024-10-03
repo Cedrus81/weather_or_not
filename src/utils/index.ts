@@ -8,16 +8,16 @@ export async function fetchDemoData(): Promise<FormattedData> {
 }
 
 
-export async function fetchWeatherData() {
+export async function fetchWeatherData(city: string) {
     const API_KEY = process.env.WEATHER_API_KEY
     try {
         // get the geo-data
-        const geoResponse = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=Tel%20Aviv&limit=1&appid=${API_KEY}`)
+        const geoResponse = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${API_KEY}`)
         const geoData = await geoResponse.json()
         const { lat, lon, name } = geoData[0]
         // use the latitude and longtitude to make the request for the weather data. Save the city name
         const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&units=metric&appid=${API_KEY}`
-        const weatherResponse = await fetch(url)
+        const weatherResponse = await fetch(url, { next: { revalidate: 10 } })
         const weatherData = await weatherResponse.json()
         // console.log(weatherData)
         const formattedData = simplifyData(weatherData, name)

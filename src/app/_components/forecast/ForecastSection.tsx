@@ -1,16 +1,15 @@
 import React from "react";
 import ForecastCard from "./ForecastCard";
-import { DailyData } from "@/types";
 
-interface ForecastSectionProps {
-  forecast: Array<DailyData>;
-}
-
-function ForecastSection({ forecast }: ForecastSectionProps) {
+function ForecastSection() {
   return (
     <section className="forecast">
-      {forecast.slice(1, 6).map((day, idx) => (
-        <ForecastCard key={day.date} day={day} isTomorrow={idx === 0} />
+      {Array.from({ length: 5 }, (_, i) => i + 1).map((day) => (
+        <ForecastCard
+          key={`day-card-` + day}
+          dayIdx={day}
+          isTomorrow={day === 1}
+        />
       ))}
     </section>
   );

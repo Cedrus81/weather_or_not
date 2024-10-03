@@ -1,12 +1,15 @@
+"use client";
+import { useWeatherData } from "@/app/_providers/WeatherDataProvider";
 import { DailyData } from "@/types";
 import Image from "next/image";
 
 interface ForecastCardProps {
   isTomorrow: boolean;
-  day: DailyData;
+  dayIdx: number;
 }
 
-async function ForecastCard({ day, isTomorrow }: ForecastCardProps) {
+function ForecastCard({ dayIdx, isTomorrow }: ForecastCardProps) {
+  const day = useWeatherData().weatherData?.forecast[dayIdx] as DailyData;
   const { icon } = day.weather[0];
   return (
     <div className="forecast-card">
